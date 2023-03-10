@@ -1,0 +1,290 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: CastAway API
+  contact:
+    email: you@your-company.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: Casting Assistant
+  - name: Casting Director
+  - name: Executive Producer
+paths:
+  /actors:
+    get:
+      tags:
+        - Casting Assistant
+        - Casting Director
+        - Executive Producer
+      summary: searches actors
+      operationId: searchActors
+      description: |
+        By passing in the appropriate options, you can search for
+        available actors in the system
+      parameters:
+        - in: query
+          name: searchString
+          description: pass an optional search string for looking up actors
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Actor'
+        '400':
+          description: bad input parameter
+    post:
+      tags:
+        - Casting Director
+        - Executive Producer
+      summary: adds an actor
+      operationId: addActor
+      description: Adds an actor to the system
+      responses:
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing item already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Actor'
+        description: Actor to add
+  /actors/{actorId}:
+    get:
+      tags:
+        - Casting Assistant
+        - Casting Director
+        - Executive Producer
+      summary: gets actor by id
+      operationId: getActor
+      parameters:
+        - name: actorId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Actor'
+    patch:
+      tags:
+        - Casting Director
+        - Executive Producer
+      summary: updates an actor by id
+      operationId: updateActor
+      parameters:
+        - name: actorId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: name
+          description: pass an optional name string
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: age
+          description: pass an optional age
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: name
+          description: pass an optional gender string
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Actor'
+    delete:
+        tags:
+            - Casting Director
+            - Executive Producer
+        summary: deletes an actor by id
+        operationId: deleteActor
+        parameters:
+          - name: actorId
+            in: path
+            required: true
+            schema:
+              type: integer
+        responses:
+          '204':
+            description: 'succesfully deleted'
+  /movies:
+    get:
+      tags:
+        - Casting Assistant
+        - Casting Director
+        - Executive Producer
+      summary: searches movies
+      operationId: searchMovies
+      description: |
+        By passing in the appropriate options, you can search for
+        available movies in the system
+      parameters:
+        - in: query
+          name: searchString
+          description: pass an optional search string for looking up movies
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+        '400':
+          description: bad input parameter
+    post:
+      tags:
+        - Executive Producer
+      summary: adds a movie
+      operationId: addMovie
+      description: Adds a movie to the system
+      responses:
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing item already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+        description: Movie to add
+  /movies/{movieId}:
+    get:
+      tags:
+        - Casting Assistant
+        - Casting Director
+        - Executive Producer
+      summary: gets movie by id
+      operationId: getMovie
+      parameters:
+        - name: movieId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+    patch:
+      tags:
+        - Casting Director
+        - Executive Producer
+      summary: updates a movie by id
+      operationId: updateMovie
+      parameters:
+        - name: movieId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: title
+          description: pass an optional title string
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: releaseDate
+          description: pass an optional release date
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+    delete:
+        tags:
+            - Executive Producer
+        summary: deletes a movie by id
+        operationId: deleteMovie
+        parameters:
+          - name: movieId
+            in: path
+            required: true
+            schema:
+              type: integer
+        responses:
+          '204':
+            description: 'succesfully deleted'
+components:
+  schemas:
+    Actor:
+      type: object
+      required:
+        - id
+        - name
+        - age
+        - gender
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Kate Winslet
+        age:
+          type: integer
+          example: 47
+        gender:
+          type: string
+          example: female
+    Movie:
+      required:
+        - id
+        - title
+        - releaseDate
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Titanic
+        releaseDate:
+          type: string
+          format: date-time
+          example: '1997-11-01'
+      type: object

@@ -1,0 +1,6 @@
+.coverage
+.DS_Store
+.pytest_cache/
+htmlcov/
+env/
+__pycache__
