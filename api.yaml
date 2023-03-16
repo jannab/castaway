@@ -11,6 +11,7 @@ tags:
   - name: Casting Assistant
   - name: Casting Director
   - name: Executive Producer
+
 paths:
   /actors:
     get:
@@ -18,18 +19,10 @@ paths:
         - Casting Assistant
         - Casting Director
         - Executive Producer
-      summary: searches actors
-      operationId: searchActors
+      summary: gets all actors
+      operationId: getActors
       description: |
-        By passing in the appropriate options, you can search for
-        available actors in the system
-      parameters:
-        - in: query
-          name: searchString
-          description: pass an optional search string for looking up actors
-          required: false
-          schema:
-            type: string
+        Returns all actors in the system
       responses:
         '200':
           description: search results matching criteria
@@ -94,24 +87,11 @@ paths:
           required: true
           schema:
             type: integer
-        - in: query
-          name: name
-          description: pass an optional name string
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: age
-          description: pass an optional age
-          required: false
-          schema:
-            type: integer
-        - in: query
-          name: name
-          description: pass an optional gender string
-          required: false
-          schema:
-            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Actor'
       responses:
         '200':
           description: response
@@ -140,18 +120,10 @@ paths:
         - Casting Assistant
         - Casting Director
         - Executive Producer
-      summary: searches movies
-      operationId: searchMovies
+      summary: gets all movies
+      operationId: gethMovies
       description: |
-        By passing in the appropriate options, you can search for
-        available movies in the system
-      parameters:
-        - in: query
-          name: searchString
-          description: pass an optional search string for looking up movies
-          required: false
-          schema:
-            type: string
+        Returns all movies in the system
       responses:
         '200':
           description: search results matching criteria
@@ -215,19 +187,11 @@ paths:
           required: true
           schema:
             type: integer
-        - in: query
-          name: title
-          description: pass an optional title string
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: releaseDate
-          description: pass an optional release date
-          required: false
-          schema:
-            type: string
-            format: date-time
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
       responses:
         '200':
           description: response
@@ -249,19 +213,16 @@ paths:
         responses:
           '204':
             description: 'succesfully deleted'
+
 components:
   schemas:
     Actor:
       type: object
       required:
-        - id
         - name
         - age
         - gender
       properties:
-        id:
-          type: integer
-          example: 1
         name:
           type: string
           example: Kate Winslet
@@ -272,19 +233,15 @@ components:
           type: string
           example: female
     Movie:
+      type: object
       required:
-        - id
         - title
         - releaseDate
       properties:
-        id:
-          type: integer
-          example: 1
-        name:
+        title:
           type: string
           example: Titanic
         releaseDate:
           type: string
           format: date-time
           example: '1997-11-01'
-      type: object
