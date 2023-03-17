@@ -38,7 +38,7 @@ docker run --name castaway --env-file=.env -p 80:8080 <your_imagename>
 ## Running the tests
 
 ```
-coverage run -m pytest .
+python test_app.py
 ```
 
 ## Error Handling
@@ -55,15 +55,15 @@ The API will return the following error types:
 - 400: Bad Request
 - 404: Resource Not Found
 - 405: Method Not Allowed
+- 409: Conflict
 - 422: Not Processable
 - 500: Internal Server Error
 
 ## Endpoints
 
-- [Endpoints on Swagger]
-  (https://app.swaggerhub.com/apis-docs/jannab/CastAway/1.0.0#/)
+- [Endpoints on Swagger](https://app.swaggerhub.com/apis-docs/jannab/CastAway/1.0.0#/)
 
 ## Acknowledgments
 
-- [README template by Billie Thompson]
-  (https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
+- [README template by Billie Thompson](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
+- [RuntimeError: A 'SQLAlchemy' instance has already been registered on this Flask app](https://stackoverflow.com/questions/75523569/runtimeerror-a-sqlalchemy-instance-has-already-been-registered-on-this-flask)

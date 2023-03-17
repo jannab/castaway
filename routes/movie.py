@@ -8,7 +8,7 @@ bp = Blueprint('movie', __name__)
 @bp.route('/', methods=['GET'])
 def get_movies():
     movies = Movie.query.all()
-    return jsonify([movie.format() for movie in movies])
+    return jsonify({'movies': [movie.format() for movie in movies]})
 
 @bp.route('/', methods=['POST'])
 def create_movie():
@@ -25,7 +25,7 @@ def create_movie():
                       releaseDate=body.get('releaseDate', None)
                       )
         movie.insert()
-        return jsonify(movie.format())
+        return jsonify({'movie': movie.format()})
 
     except Exception:
         abort(422)
@@ -33,24 +33,24 @@ def create_movie():
 @bp.route('/<int:id>', methods=['GET'])
 def get_movie(id):
     movie = Movie.query.get_or_404(id)
-    return jsonify(movie.format())
+    return jsonify({'movie': movie.format()})
 
 @bp.route('/<int:id>', methods=['PATCH'])
 def update_movie(id):
     body = request.get_json()
     movie = Movie.query.get_or_404(id)
 
-    if 'title' in body:
+    if 'title' in body and body.get('title') != movie.title:
         if Movie.query.filter(Movie.title == body.get('title')).first():
             abort(409)
         movie.title = body.get('title')
 
-    if 'releaseDate' in body:
+    if 'releaseDate' in body and body.get('releaseDate') != movie.releaseDate:
         movie.releaseDate = body.get('releaseDate')
 
     try:
         movie.update()
-        return jsonify(movie.format())
+        return jsonify({'movie': movie.format()})
 
     except Exception:
         abort(422)

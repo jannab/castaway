@@ -4,16 +4,9 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-DB_PATH = os.getenv('DB_PATH', 'postgresql://postgres@127.0.0.1:5432/castaway')
-
-
-def setup_db(app, database_path=DB_PATH):
-    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    db.app = app
-    db.init_app(app)
+def db_drop_and_create_all():
+    db.drop_all()
     db.create_all()
-
 
 movie_casts = db.Table('movie_casts',
                        db.Column('movie_id', db.Integer,
