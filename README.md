@@ -19,7 +19,7 @@ Create a local .env file.
 Without Docker:
 Install Dependencies in a virtual environment:
 ```
-pip install -r requirememnts.txt
+pip install -r requirements.txt
 ```
 
 Using Docker:
@@ -53,6 +53,8 @@ Errors are returned as JSON objects in the following format:
 ```
 The API will return the following error types:
 - 400: Bad Request
+- 401: Unauthorized
+- 403: Forbidden
 - 404: Resource Not Found
 - 405: Method Not Allowed
 - 409: Conflict

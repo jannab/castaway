@@ -1,19 +1,24 @@
 from flask import Blueprint, abort, jsonify, request
 
+from auth import requires_auth
 from models import Actor
 
 bp = Blueprint('actor', __name__)
 
+
 @bp.route('/', methods=['GET'])
-def get_actors():
+@requires_auth('get:actors')
+def get_actors(jwt):
     actors = Actor.query.all()
     return jsonify({'actors': [actor.format() for actor in actors]})
 
+
 @bp.route('/', methods=['POST'])
-def create_actor():
+@requires_auth('post:actors')
+def create_actor(jwt):
     body = request.get_json()
 
-    if not 'name' in body:
+    if 'name' not in body:
         abort(422)
 
     if Actor.query.filter(Actor.name == body.get('name')).first():
@@ -30,13 +35,17 @@ def create_actor():
     except Exception:
         abort(422)
 
+
 @bp.route('/<int:id>', methods=['GET'])
-def get_actor(id):
+@requires_auth('get:actors')
+def get_actor(jwt, id):
     actor = Actor.query.get_or_404(id)
     return jsonify({'actor': actor.format()})
 
+
 @bp.route('/<int:id>', methods=['PATCH'])
-def update_actor(id):
+@requires_auth('patch:actors')
+def update_actor(jwt, id):
     body = request.get_json()
     actor = Actor.query.get_or_404(id)
 
@@ -58,8 +67,10 @@ def update_actor(id):
     except Exception:
         abort(422)
 
+
 @bp.route('/<int:id>', methods=['DELETE'])
-def delete_actor(id):
+@requires_auth('delete:actors')
+def delete_actor(jwt, id):
     actor = Actor.query.get_or_404(id)
 
     try:

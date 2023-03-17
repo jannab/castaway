@@ -1,20 +1,25 @@
 from flask import Blueprint, abort, jsonify, request
 from sqlalchemy import select
 
+from auth import requires_auth
 from models import Movie
 
 bp = Blueprint('movie', __name__)
 
+
 @bp.route('/', methods=['GET'])
-def get_movies():
+@requires_auth('get:movies')
+def get_movies(jwt):
     movies = Movie.query.all()
     return jsonify({'movies': [movie.format() for movie in movies]})
 
+
 @bp.route('/', methods=['POST'])
-def create_movie():
+@requires_auth('post:movies')
+def create_movie(jwt):
     body = request.get_json()
 
-    if not 'title' in body:
+    if 'title' not in body:
         abort(422)
 
     if Movie.query.filter(Movie.title == body.get('title')).first():
@@ -30,13 +35,17 @@ def create_movie():
     except Exception:
         abort(422)
 
+
 @bp.route('/<int:id>', methods=['GET'])
-def get_movie(id):
+@requires_auth('get:movies')
+def get_movie(jwt, id):
     movie = Movie.query.get_or_404(id)
     return jsonify({'movie': movie.format()})
 
+
 @bp.route('/<int:id>', methods=['PATCH'])
-def update_movie(id):
+@requires_auth('patch:movies')
+def update_movie(jwt, id):
     body = request.get_json()
     movie = Movie.query.get_or_404(id)
 
@@ -55,8 +64,10 @@ def update_movie(id):
     except Exception:
         abort(422)
 
+
 @bp.route('/<int:id>', methods=['DELETE'])
-def delete_movie(id):
+@requires_auth('delete:movies')
+def delete_movie(jwt, id):
     movie = Movie.query.get_or_404(id)
 
     try:

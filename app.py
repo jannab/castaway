@@ -7,6 +7,7 @@ from models import db
 
 DB_PATH = os.getenv('DB_PATH', 'postgresql://postgres@127.0.0.1:5432/castaway')
 
+
 def create_app(test_config=None):
     app = Flask(__name__)
     app.config.from_mapping(SQLALCHEMY_DATABASE_URI=DB_PATH)
@@ -24,6 +25,7 @@ def create_app(test_config=None):
     app.register_blueprint(movie.bp, url_prefix='/movies')
 
     return app
+
 
 if __name__ == '__main__':
     app = create_app()
