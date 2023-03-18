@@ -4,13 +4,12 @@ from flask import abort, request, _request_ctx_stack
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
-
+from dotenv import load_dotenv
 
 # workaround for urlopen issue
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 
-from dotenv import load_dotenv
 
 load_dotenv()
 
