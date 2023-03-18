@@ -10,10 +10,14 @@ from urllib.request import urlopen
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 
+from dotenv import load_dotenv
 
-AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN')
-ALGORITHMS = os.getenv('ALGORITHMS')
-API_AUDIENCE = os.getenv('API_AUDIENCE')
+load_dotenv()
+
+
+AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN', None)
+ALGORITHMS = os.environ.get('ALGORITHMS', None)
+API_AUDIENCE = os.environ.get('API_AUDIENCE', None)
 
 
 class AuthError(Exception):
