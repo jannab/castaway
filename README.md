@@ -60,8 +60,9 @@ The API will return the following error types:
 - 500: Internal Server Error
 
 ## Endpoints
+CastApi can be found here: https://castaway.onrender.com
 
-- [Endpoints on Swagger](https://app.swaggerhub.com/apis-docs/jannab/castawayapi/1.0.0-oas3#/)
+- [Endpoint documentation on Swagger](https://app.swaggerhub.com/apis-docs/jannab/castawayapi/1.0.0-oas3#/)
 
 ## Acknowledgments
 
