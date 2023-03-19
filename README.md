@@ -46,9 +46,7 @@ python test_app.py
 Errors are returned as JSON objects in the following format:
 ```
 {
-    "success": False,
-    "error": 400,
-    "message": "bad request"
+    "error": "error description"
 }
 ```
 The API will return the following error types:
@@ -63,7 +61,7 @@ The API will return the following error types:
 
 ## Endpoints
 
-- [Endpoints on Swagger](https://app.swaggerhub.com/apis-docs/jannab/CastAway/1.0.0#/)
+- [Endpoints on Swagger](https://app.swaggerhub.com/apis-docs/jannab/castawayapi/1.0.0-oas3#/)
 
 ## Acknowledgments
 

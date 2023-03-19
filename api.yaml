@@ -1,17 +1,16 @@
 openapi: 3.0.0
 info:
-  version: "1.0.0"
+  version: 1.0.0-oas3
   title: CastAway API
   contact:
     email: you@your-company.com
   license:
     name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
 tags:
   - name: Casting Assistant
   - name: Casting Director
   - name: Executive Producer
-
 paths:
   /actors:
     get:
@@ -19,35 +18,57 @@ paths:
         - Casting Assistant
         - Casting Director
         - Executive Producer
-      summary: gets all actors
-      operationId: getActors
+      summary: get all actors
+      operationId: get_actors
       description: |
         Returns all actors in the system
       responses:
         '200':
-          description: search results matching criteria
+          description: response
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Actor'
+                type: object
+                properties:
+                  actors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Actor'
         '400':
           description: bad input parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - Casting Director
         - Executive Producer
-      summary: adds an actor
-      operationId: addActor
+      summary: create actor
+      operationId: create_actor
       description: Adds an actor to the system
       responses:
-        '201':
-          description: item created
+        '200':
+          description: response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  actor:
+                    $ref: '#/components/schemas/Actor'
         '400':
-          description: 'invalid input, object invalid'
+          description: invalid input, object invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '409':
           description: an existing item already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       requestBody:
         content:
           application/json:
@@ -60,8 +81,8 @@ paths:
         - Casting Assistant
         - Casting Director
         - Executive Producer
-      summary: gets actor by id
-      operationId: getActor
+      summary: get actor by id
+      operationId: get_actor
       parameters:
         - name: actorId
           in: path
@@ -74,13 +95,22 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Actor'
+                type: object
+                properties:
+                  actor:
+                    $ref: '#/components/schemas/Actor'
+        '404':
+          description: resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     patch:
       tags:
         - Casting Director
         - Executive Producer
-      summary: updates an actor by id
-      operationId: updateActor
+      summary: update actor by id
+      operationId: update_actor
       parameters:
         - name: actorId
           in: path
@@ -98,61 +128,98 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Actor'
+                type: object
+                properties:
+                  actor:
+                    $ref: '#/components/schemas/Actor'
+        '404':
+          description: resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
-        tags:
-            - Casting Director
-            - Executive Producer
-        summary: deletes an actor by id
-        operationId: deleteActor
-        parameters:
-          - name: actorId
-            in: path
-            required: true
-            schema:
-              type: integer
-        responses:
-          '204':
-            description: 'succesfully deleted'
+      tags:
+        - Casting Director
+        - Executive Producer
+      summary: delete actor by id
+      operationId: delete_actor
+      parameters:
+        - name: actorId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: succesfully deleted
+        '404':
+          description: resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /movies:
     get:
       tags:
         - Casting Assistant
         - Casting Director
         - Executive Producer
-      summary: gets all movies
-      operationId: gethMovies
+      summary: get all movies
+      operationId: get_movies
       description: |
         Returns all movies in the system
       responses:
         '200':
-          description: search results matching criteria
+          description: response
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Movie'
+                type: object
+                properties:
+                  movies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Movie'
         '400':
           description: bad input parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - Executive Producer
-      summary: adds a movie
-      operationId: addMovie
+      summary: create movie
+      operationId: create_movie
       description: Adds a movie to the system
       responses:
-        '201':
-          description: item created
+        '200':
+          description: response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  movie:
+                    $ref: '#/components/schemas/Movie'
         '400':
-          description: 'invalid input, object invalid'
+          description: invalid input, object invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '409':
           description: an existing item already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Movie'
+                $ref: '#/components/schemas/Movie'
         description: Movie to add
   /movies/{movieId}:
     get:
@@ -160,8 +227,8 @@ paths:
         - Casting Assistant
         - Casting Director
         - Executive Producer
-      summary: gets movie by id
-      operationId: getMovie
+      summary: get movie by id
+      operationId: get_movie
       parameters:
         - name: movieId
           in: path
@@ -174,13 +241,22 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Movie'
+                type: object
+                properties:
+                  movie:
+                    $ref: '#/components/schemas/Movie'
+        '404':
+          description: resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     patch:
       tags:
         - Casting Director
         - Executive Producer
-      summary: updates a movie by id
-      operationId: updateMovie
+      summary: update movie by id
+      operationId: update_movie
       parameters:
         - name: movieId
           in: path
@@ -198,22 +274,36 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Movie'
+                type: object
+                properties:
+                  movie:
+                    $ref: '#/components/schemas/Movie'
+        '404':
+          description: resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
-        tags:
-            - Executive Producer
-        summary: deletes a movie by id
-        operationId: deleteMovie
-        parameters:
-          - name: movieId
-            in: path
-            required: true
-            schema:
-              type: integer
-        responses:
-          '204':
-            description: 'succesfully deleted'
-
+      tags:
+        - Executive Producer
+      summary: delete movie by id
+      operationId: delete_movie
+      parameters:
+        - name: movieId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: succesfully deleted
+        '404':
+          description: resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     Actor:
@@ -245,3 +335,11 @@ components:
           type: string
           format: date-time
           example: '1997-11-01'
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          example: error description
