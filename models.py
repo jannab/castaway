@@ -4,9 +4,11 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
 def db_drop_and_create_all():
     db.drop_all()
     db.create_all()
+
 
 movie_casts = db.Table('movie_casts',
                        db.Column('movie_id', db.Integer,
